@@ -1,25 +1,59 @@
 import logo from './logo.svg';
 import './App.css';
+import React, { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class SettingsList extends Component {
+  render() {
+    return (
+      <ul>
+        {this.props.items.map(item => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    );
+  }
 }
 
-export default App;
+
+class App extends Component {
+  
+  constructor(props) {
+    super(props)
+    this.state = {
+      version: 0
+    } 
+    this.handleSelect = this.handleSelect.bind(this)
+  }
+
+  handleSelect() {
+    var version = document.getElementById('version-selector').value
+    this.setState({ version: version });
+    this.render();
+  }
+
+  render() {
+    return <div className="App">
+      <header className="App-header">
+        <p>
+          Select version
+        </p>
+        
+        <select 
+          class = "dropdown"
+          id='version-selector'
+          onChange ={this.handleSelect}
+          name="cars" >
+          <option value={0}>beyond 1.3</option>
+          <option value={1.3}>1.3</option>
+          <option value={1.5}>1.5</option>
+          
+        </select>
+
+        <p>
+          Settings generator for {this.state.version}
+        </p>
+        <SettingsList items = {[]}/>
+      </header>
+    </div>
+  }
+}
