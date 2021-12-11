@@ -4,9 +4,27 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+class Version {
+  constructor(number, text) {
+    this.number = number 
+    this.text = text 
+  }
+}
+
+
+function version(x, y) {
+  return new Version(x, y)
+}
+
+let versions = [
+  version(0, "beyond 1.3"),
+  version(1.3, "1.3"),
+  version(1.4, "latest")
+]
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App versions ={versions} />
   </React.StrictMode>,
   document.getElementById('root')
 );

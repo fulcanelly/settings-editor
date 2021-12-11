@@ -22,7 +22,7 @@ function handleSelect(setVersion) {
 }
 
 
-function App() {
+function App(props) {
   const [version, setVersion] = useState(0)
   return <div className="App">
     <header className="App-header">
@@ -32,13 +32,10 @@ function App() {
       
       <select 
         class = "dropdown"
-        id='version-selector'
+        id ='version-selector'
         onChange = {() => handleSelect(setVersion)}
-        name="cars" >
-        <option value={0}>beyond 1.3</option>
-        <option value={1.3}>1.3</option>
-        <option value={1.5}>1.5</option>
-        
+        >
+        {props.versions.map(version => <option value={version.number}>{version.text}</option>)}
       </select>
 
       <p>
