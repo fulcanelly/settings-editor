@@ -23,25 +23,33 @@ function handleSelect(setVersion) {
 
 
 function App(props) {
+
   const [version, setVersion] = useState(0)
+  
   return <div className="App">
     <header className="App-header">
-      <p>
-        Select version
-      </p>
-      
-      <select 
-        class = "dropdown"
-        id ='version-selector'
-        onChange = {() => handleSelect(setVersion)}
-        >
-        {props.versions.map(version => <option value={version.number}>{version.text}</option>)}
-      </select>
-
-      <p>
-        Settings generator for {version}
-      </p>
-      <SettingsList items = {[]}/>
+      <div class="parent"> 
+        <div child="child">
+          <p>
+            Select version
+          </p>
+        </div>
+        <div class="box child">
+          <select 
+            class = "dropdown"
+            id ='version-selector'
+            onChange = {() => handleSelect(setVersion)}
+            >
+            {props.versions.map(version => <option value={version.number}>{version.text}</option>)}
+          </select>
+        </div>
+        <div child="child">
+          <p>
+            Settings generator for {version}
+          </p>
+        </div>
+        <SettingsList items = {[]}/>
+      </div>
     </header>
   </div>
 }

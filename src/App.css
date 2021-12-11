@@ -35,4 +35,14 @@
   to {
     transform: rotate(360deg);
   }
+
+.parent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.child {
+  height: 100px; 
+  margin: auto;  
 }
