@@ -28,7 +28,6 @@ class App extends Component {
   handleSelect() {
     var version = document.getElementById('version-selector').value
     this.setState({ version: version });
-    this.render();
   }
 
   render() {
@@ -57,3 +56,5 @@ class App extends Component {
     </div>
   }
 }
+
+export default App;
