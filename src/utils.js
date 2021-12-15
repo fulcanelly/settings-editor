@@ -75,7 +75,6 @@ class StateValueMediator {
   }
 
   getBoundStateSetter() {
-    console.log("giving bound state setter")
     return () => this.setState()
   }
 
