@@ -75,8 +75,11 @@ function useState_(func, ...rest) {
 }
 
 function App(props) {
-  const [version, setVersion] = useState_(handleSelect, 0)
   const [objState, setObjState] = useState({})
+  const [version, setVersion] = useState_((...args) => {
+    setObjState({})
+    handleSelect(...args)
+  }, 0)
 
   let compact = genCompactMediatedStateSetter(setObjState, objState)
 
