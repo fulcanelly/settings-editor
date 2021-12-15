@@ -68,6 +68,11 @@ class StateValueMediator {
     return () => this.setState()
   }
 
+  withProperty(property) {
+    this.property = property
+    return this
+  }
+
   pack(next) {
     return () => next(this.getValue(), this.getBoundStateSetter())
   }
