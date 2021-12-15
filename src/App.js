@@ -22,6 +22,11 @@ function handleSelect(setVersion) {
 }
 
 
+function useState_(func, ...rest) {
+  let [var_, setVar] = useState(...rest)
+  return [var_, () => func(setVar)]
+}
+
 function App(props) {
 
   const [version, setVersion] = useState(0)
