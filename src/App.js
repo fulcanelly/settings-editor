@@ -28,32 +28,25 @@ function useState_(func, ...rest) {
 }
 
 function App(props) {
+  const [version, setVersion] = useState_(handleSelect, 0)
+  const [objState, setObjState] = useState({})
 
-  const [version, setVersion] = useState(0)
-  
+  let compact = genCompactMediatedStateSetter(setObjState, objState)
+
   return <div className="App">
     <header className="App-header">
       <div class="parent"> 
-        <div child="child">
-          <p>
-            Select version
-          </p>
-        </div>
-        <div class="box child">
-          <select 
-            class = "dropdown"
-            id ='version-selector'
-            onChange = {() => handleSelect(setVersion)}
-            >
+        <div class="child">
+          <p>Config editor for {version} version</p> 
+          <select class = "dropdown" id ='version-selector' onChange = {setVersion}>
             {props.versions.map(version => <option value={version.number}>{version.text}</option>)}
           </select>
         </div>
-        <div child="child">
-          <p>
-            Settings generator for {version}
-          </p>
+        {newSettingsList(form, compact)}
+        <div class='child'>
+          <textarea value={stringify(objState)}></textarea>
         </div>
-        <SettingsList items = {[]}/>
+        
       </div>
     </header>
   </div>
