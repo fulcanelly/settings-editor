@@ -60,7 +60,7 @@ class StateValueMediator {
   }
 
   getValue() {
-    return this.lazyValue.transform(it => it[this.property])
+    return this.lazyValue.transform(it => it?.[this.property])
   }
 
   getBoundStateSetter() {
