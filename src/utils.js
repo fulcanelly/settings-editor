@@ -25,6 +25,13 @@ class LazyValue {
   }
 }
 
+function getDefaultOrState(setter, dflt) {
+  if (dflt && undefined == setter.getActualState()) {
+    console.log("setting default")
+    return void setter.setState(dflt)
+  } 
+  return setter.getValue() ?? dflt
+}
 
 class StateValueMediator {
 
@@ -40,6 +47,10 @@ class StateValueMediator {
       return 
     }
     this.setState(state)
+  }
+
+  getActualState() {
+    return this.actualState
   }
 
   setError() {
@@ -114,6 +125,7 @@ let genCompactMediatedStateSetter =
 export {
   LazyValue,
   genStateSetter,
+  getDefaultOrState,
   genStateSetterCompact,
   genCompactMediatedStateSetter
 }
