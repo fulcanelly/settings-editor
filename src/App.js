@@ -1,26 +1,73 @@
-import logo from './logo.svg';
 import './App.css';
-import React, { Component, useState } from "react";
+import './checkbox.css';
 
-class SettingsList extends Component {
-  render() {
-    return (
-      <ul>
-        {this.props.items.map(item => (
-          <li>{item}</li>
-        ))}
-      </ul>
-    );
+import { stringify } from 'yaml';
+import React, { Component, useState } from "react";
+import * as R from "ramda";
+import {
+  getDefaultOrState,
+  genCompactMediatedStateSetter
+} from './utils'
+import mappings from './settings'
+
+const emptyList = [{ name: "No known settings available for this version"}]
+
+
+function newRestrictedInput(form, id, genSetter) {
+  if (!form) { 
+    return
   }
+
+  const setter = genSetter(id);
+
+  return R.cond([
+    [R.equals("text"), R.always(<input id={id} value={getDefaultOrState(setter, form.default)} onChange={setter.getBoundStateSetter()}></input>)],
+    [R.equals("int"), R.always(<input id={id} value={getDefaultOrState(setter, form.default)} onChange={setter.pack((value) => {
+      let val = Number.parseInt(value)
+      if (val < form.range.from) {
+        return setter.setError()
+      }
+      setter.setState(val)
+    })}></input>)],
+    [R.equals("bool"), () => {
+      let csetter = setter.withProperty("checked");
+      return <label class="switch">    
+        <input checked = {getDefaultOrState(csetter, form.default)} id={id} onClick={csetter.getBoundStateSetter()} type="checkbox"></input>
+        <span class="slider"></span>
+      </label>
+    }
+     
+    ],
+    [R.T, R.always()]
+  ])(form?.type)
 }
 
 
-function handleSelect(setVersion) {
+function whenPresent(item, stuff) {
+  if (item) {
+    return stuff
+  }
+  return null
+}
+
+function newConfigEntry(item, genSetter) {
+  return <div class='child'>
+      <h3>{item.name}</h3>
+      {whenPresent(item.description, <p>{item.description}</p>)}
+      {newRestrictedInput(item.form, item.name, genSetter)}
+    </div>
+}
+
+function newSettingsList(items, genSetter) {
+  return items.map(item => newConfigEntry(item, genSetter))
+}
+
+
+function handleSelect(setVersion, val) {
   setVersion(
-    document.getElementById('version-selector').value
+    val ?? document.getElementById('version-selector').value
   )
 }
-
 
 function useState_(func, ...rest) {
   let [var_, setVar] = useState(...rest)
@@ -42,11 +89,10 @@ function App(props) {
             {props.versions.map(version => <option value={version.number}>{version.text}</option>)}
           </select>
         </div>
-        {newSettingsList(form, compact)}
+        {newSettingsList(mappings[version] ?? emptyList, compact)}
         <div class='child'>
           <textarea value={stringify(objState)}></textarea>
         </div>
-        
       </div>
     </header>
   </div>
